@@ -19,16 +19,19 @@ export const signin = async (email: string, password: string) => {
         const data = await res.json();
 
         if (!data.status) {
-            throw data.error;
+            throw {
+                error: data.error,
+                code: res.status
+            }
         }
 
         return data;
-    } catch (err) {
+    } catch (err: any) {
         console.log(err)
         throw {
             status: false,
-            code: 400,
-            error: err
+            code: err.code,
+            error: err.error
         }
     }
 }
@@ -131,4 +134,11 @@ export const sendPasswordResetLink = async (email: string) => {
     } else {
         throw data.error;
     }
+}
+
+
+export const resetPassword = async (password: string, password2: string) => {
+    if (!password) throw "Password is required";
+    if (!password2) throw "Please confirm your password";
+    if (password !== password2) throw "Passwords do not match";
 }

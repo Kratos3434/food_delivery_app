@@ -29,7 +29,11 @@ const Signin = () => {
 
         } catch (err: any) {
             isLoading(false);
-            setError(err.error);
+            if (err.code === 401) {
+                router.push("/verify");
+            } else {
+                setError(err.error);
+            }
         }
     }
 
